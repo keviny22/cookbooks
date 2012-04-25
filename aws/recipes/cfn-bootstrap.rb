@@ -27,7 +27,7 @@ remote_file "/tmp/aws-cfn-bootstrap-latest.tar.gz" do
   not_if "pip freeze |grep aws-cfn-bootstrap"
 end
 
-execute "yaws-bootstrap-cfn" do
+execute "aws-bootstrap-cfn" do
   command "easy_install /tmp/aws-cfn-bootstrap-latest.tar.gz"
   not_if "pip freeze |grep aws-cfn-bootstrap"
 end
