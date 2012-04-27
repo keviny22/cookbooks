@@ -21,7 +21,7 @@ end
   end
 end
 
-remote_file "/tmp/aws-cfn-bootstrap-latest.tar.gz" do
+remote_file "#{file_cache_path}/aws-cfn-bootstrap-latest.tar.gz" do
   source "https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz"
   mode "600"
   not_if "pip freeze |grep aws-cfn-bootstrap"
