@@ -1,8 +1,9 @@
 #
-# Cookbook Name:: build-essential
+# Author:: Seth Chisamore (<schisamo@opscode.com>)
+# Cookbook Name:: java
 # Recipe:: default
 #
-# Copyright 2008-2009, Opscode, Inc.
+# Copyright 2008-2011, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,23 +18,4 @@
 # limitations under the License.
 #
 
-case node['platform']
-when "ubuntu","debian"
-  %w{build-essential binutils-doc}.each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
-when "centos","redhat","fedora","amazon","scientific"
-  %w{gcc gcc-c++ kernel-devel make}.each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
-end
-
-[ "autoconf", "flex", "bison" ].each do |pkg|
-  package pkg do
-    action :install
-  end
-end
+include_recipe "java::#{node['java']['install_flavor']}"

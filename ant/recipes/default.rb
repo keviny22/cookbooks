@@ -1,3 +1,5 @@
+include_recipe = "java"
+
 ant_pkgs = value_for_platform(
   ["debian","ubuntu",] => {
     "default" => ["ant","ant-contrib"]
