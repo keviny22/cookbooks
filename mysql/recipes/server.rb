@@ -26,37 +26,6 @@ node.set_unless['mysql']['server_debian_password'] = secure_password
 node.set_unless['mysql']['server_root_password']   = secure_password
 node.set_unless['mysql']['server_repl_password']   = secure_password
 
-if platform?(%w{debian ubuntu})
-
-  directory "/var/cache/local/preseeding" do
-    owner "root"
-    group node['mysql']['root_group']
-    mode 0755
-    recursive true
-  end
-
-  execute "preseed mysql-server" do
-    command "debconf-set-selections /var/cache/local/preseeding/mysql-server.seed"
-    action :nothing
-  end
-
-  template "/var/cache/local/preseeding/mysql-server.seed" do
-    source "mysql-server.seed.erb"
-    owner "root"
-    group node['mysql']['root_group']
-    mode "0600"
-    notifies :run, resources(:execute => "preseed mysql-server"), :immediately
-  end
-
-  template "#{node['mysql']['conf_dir']}/debian.cnf" do
-    source "debian.cnf.erb"
-    owner "root"
-    group node['mysql']['root_group']
-    mode "0600"
-  end
-
-end
-
 package node['mysql']['package_name'] do
   action :install
 end
@@ -70,23 +39,11 @@ end
 
 service "mysql" do
   service_name node['mysql']['service_name']
-  if (platform?("ubuntu") && node.platform_version.to_f >= 10.04)
-    restart_command "restart mysql"
-    stop_command "stop mysql"
-    start_command "start mysql"
-  end
   supports :status => true, :restart => true, :reload => true
   action :nothing
 end
 
-skip_federated = case node['platform']
-                 when 'fedora', 'ubuntu', 'amazon'
-                   true
-                 when 'centos', 'redhat', 'scientific'
-                   node['platform_version'].to_f < 6.0
-                 else
-                   false
-                 end
+skip_federated = node['platform_version'].to_f < 6.0
 
 template "#{node['mysql']['conf_dir']}/my.cnf" do
   source "my.cnf.erb"
@@ -106,16 +63,10 @@ unless Chef::Config[:solo]
   end
 end
 
-# set the root password on platforms 
-# that don't support pre-seeding
-unless platform?(%w{debian ubuntu})
-
-  execute "assign-root-password" do
-    command "#{node['mysql']['mysqladmin_bin']} -u root password \"#{node['mysql']['server_root_password']}\""
-    action :run
-    only_if "#{node['mysql']['mysql_bin']} -u root -e 'show databases;'"
-  end
-
+execute "assign-root-password" do
+  command "#{node['mysql']['mysqladmin_bin']} -u root password \"#{node['mysql']['server_root_password']}\""
+  action :run
+  only_if "#{node['mysql']['mysql_bin']} -u root -e 'show databases;'"
 end
 
 grants_path = node['mysql']['grants_path']

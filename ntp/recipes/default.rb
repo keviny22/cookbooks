@@ -19,38 +19,12 @@
 
 root_group = node['ntp']['root_group']
 
-case node[:platform]
-when "ubuntu","debian"
-  package "ntpdate" do
-    action :install
-  end
-  package "ntp" do
-    action :install
-  end
-when "redhat","centos","fedora","scientific"
-  package "ntp" do
-    action :install
-  end
-  package "ntpdate" do
-    action :install
-  end unless node[:platform_version].to_i < 6
+package "ntp" do
+  action :install
 end
 
-case node[:platform]
-when "freebsd"
-  directory node[:ntp][:statsdir] do
-    owner "root"
-    group root_group
-    mode "0755"
-  end
-when "redhat","centos","fedora","scientific"
-  # ntpstats dir doesn't exist on RHEL/CentOS
-else
-  directory node[:ntp][:statsdir] do
-    owner "ntp"
-    group "ntp"
-    mode "0755"
-  end
+package "ntpdate" do
+  action :install
 end
 
 service node[:ntp][:service] do
