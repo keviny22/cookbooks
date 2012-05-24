@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: ruby
-# Recipe:: default
+# Cookbook Name:: apache2
+# Definition:: apache_conf
 #
-# Copyright 2012, Intuit, Inc.
+# Copyright 2008-2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,16 +17,10 @@
 # limitations under the License.
 #
 
-remote_file "#{Chef::Config[:file_cache_path]}/libyaml.rpm" do
-  source node[:ruby][:libyaml][:url]
-end
-
-remote_file "#{Chef::Config[:file_cache_path]}/ruby.rpm" do
-  source node[:ruby][:url]
-end
-
-["libyaml", "ruby"].each do |pkg|
-  rpm_package pkg do
-    source "#{Chef::Config[:file_cache_path]}/#{pkg}.rpm"
+define :apache_conf do
+  template "#{node['apache']['dir']}/mods-available/#{params[:name]}.conf" do
+    source "mods/#{params[:name]}.conf.erb"
+    notifies :restart, resources(:service => "apache2")
+    mode 0644
   end
 end

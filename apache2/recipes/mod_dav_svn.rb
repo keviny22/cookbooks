@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: ruby
-# Recipe:: default
+# Cookbook Name:: apache2
+# Recipe:: dav_svn 
 #
-# Copyright 2012, Intuit, Inc.
+# Copyright 2008-2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,16 +17,13 @@
 # limitations under the License.
 #
 
-remote_file "#{Chef::Config[:file_cache_path]}/libyaml.rpm" do
-  source node[:ruby][:libyaml][:url]
-end
-
-remote_file "#{Chef::Config[:file_cache_path]}/ruby.rpm" do
-  source node[:ruby][:url]
-end
-
-["libyaml", "ruby"].each do |pkg|
-  rpm_package pkg do
-    source "#{Chef::Config[:file_cache_path]}/#{pkg}.rpm"
+package "libapache2-svn" do
+  case node['platform']
+  when "centos","redhat","scientific","fedora","suse","amazon"
+    package_name "mod_dav_svn"
+  else
+    package_name "libapache2-svn"
   end
 end
+
+apache_module "dav_svn"

@@ -28,6 +28,6 @@ remote_file "#{Chef::Config[:file_cache_path]}/aws-cfn-bootstrap-latest.tar.gz" 
 end
 
 execute "aws-bootstrap-cfn" do
-  command "easy_install /tmp/aws-cfn-bootstrap-latest.tar.gz"
+  command "easy_install #{Chef::Config[:file_cache_path]}/aws-cfn-bootstrap-latest.tar.gz"
   not_if "pip freeze |grep aws-cfn-bootstrap"
 end
