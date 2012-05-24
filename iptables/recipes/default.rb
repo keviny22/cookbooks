@@ -35,3 +35,15 @@ end
 
 iptables_rule "all_established"
 iptables_rule "all_icmp"
+
+service 'iptables' do
+  supports :start => true, :status => true, :restart => true, :reload => true
+  if node[:iptables][:enabled]
+    action [:enable, :start]
+  else
+    action [:disable, :stop]
+  end
+
+  # overloading reload for saving
+  reload_command 'service iptables save'
+end
