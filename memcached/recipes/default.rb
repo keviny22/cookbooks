@@ -18,12 +18,12 @@
 #
 
 package "memcached" do
-  action :upgrade
+  action :install
 end
 
 package "libmemcache-dev" do
   package_name "libmemcache-devel"
-  action :upgrade
+  action :install
 end
 
 service "memcached" do
