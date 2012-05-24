@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-%{/root/.bashrc /root/.bash_profile /etc/bashrc /etc/profile}.each do |file|
+%w{/root/.bashrc /root/.bash_profile /etc/bashrc /etc/profile}.each do |file|
   execute "umask-#{file}" do
     command "umask 022 ; chmod 664 #{file}; sed -i '/umask 077/d' #{file}"
     action :run

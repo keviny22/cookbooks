@@ -26,5 +26,3 @@ mysql_packages.each do |mysql_pack|
     action :install
   end
 end
-
-package 'ruby-mysql'
