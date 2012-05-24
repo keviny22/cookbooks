@@ -1,3 +1,3 @@
-include_recipe "intu-base::umask"
-include_recipe "intu-base::disable_password_expiration"
-include_recipe "intu-base::logrotate"
+include_recipe "intu-baseline-tweaks::umask"
+include_recipe "intu-baseline-tweaks::disable_password_expiration"
+include_recipe "intu-baseline-tweaks::logrotate"
