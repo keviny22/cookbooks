@@ -1,7 +1,7 @@
 Description
 ===========
 
-This is the Intuit base cookbook.  It contains recipes of common action on Red Hat instnaces
+This is the Intuit base cookbook.  It contains recipes of common changes required across differnt Intuit Red Hat instnaces.
 
 Requirements
 ============

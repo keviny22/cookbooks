@@ -7,7 +7,9 @@
 # All rights reserved - Do Not Redistribute
 #
 
-execute "umask" do
-  command "umask 022 ; for x in /root/.bashrc /root/.bash_profile /etc/bashrc /etc/profile; do chmod 664 $x; sed -i '/umask 077/d' $x; done"
-  action :run
+%{/root/.bashrc /root/.bash_profile /etc/bashrc /etc/profile}.each do |file|
+  execute "umask-#{file}" do
+    command "umask 022 ; chmod 664 #{file}; sed -i '/umask 077/d' #{file}"
+    action :run
+  end
 end
