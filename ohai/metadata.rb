@@ -7,6 +7,10 @@ version          "1.0.2"
 
 recipe "ohai::default", "Distributes a directory of custom ohai plugins"
 
+%w{ redhat }.each do |os|
+  supports os
+end
+
 attribute "ohai/plugin_path",
   :display_name => "Ohai Plugin Path",
   :description => "Distribute plugins to this path.",

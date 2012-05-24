@@ -6,3 +6,7 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "1.0.0"
 
 recipe "openssl", "Empty, this cookbook provides a library, see README.md"
+
+%w{ redhat }.each do |os|
+  supports os
+end

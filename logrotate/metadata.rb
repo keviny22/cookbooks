@@ -7,6 +7,6 @@ version           "0.8.2"
 
 recipe "logrotate", "Keeps logrotate package updated"
 
-%w{ redhat centos debian ubuntu }.each do |os|
+%w{ redhat }.each do |os|
   supports os
 end

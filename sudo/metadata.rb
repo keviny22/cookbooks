@@ -6,7 +6,7 @@ version           "1.1.0"
 
 recipe "sudo", "Installs sudo and configures /etc/sudoers"
 
-%w{redhat centos fedora ubuntu debian freebsd}.each do |os|
+%w{ redhat }.each do |os|
   supports os
 end
 
