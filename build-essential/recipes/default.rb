@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-%w{autoconf bison flex gcc gcc-c++ kernel-devel make}.each do |pkg|
+%w{autoconf bison flex gcc gcc-c++ kernel-devel libxml2-devel libxslt-devel make}.each do |pkg|
   package pkg do
     action :install
   end

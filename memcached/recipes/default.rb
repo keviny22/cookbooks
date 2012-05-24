@@ -21,8 +21,8 @@ package "memcached" do
   action :install
 end
 
-package "libmemcache-dev" do
-  package_name "libmemcache-devel"
+package "libmemcached-devel" do
+  package_name "libmemcached-devel"
   action :install
 end
 

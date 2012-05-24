@@ -22,9 +22,8 @@
 include_recipe "mysql::client"
 
 # generate all passwords
-node.set_unless['mysql']['server_debian_password'] = secure_password
-node.set_unless['mysql']['server_root_password']   = secure_password
-node.set_unless['mysql']['server_repl_password']   = secure_password
+node.set_unless['mysql']['server_root_password'] = secure_password
+node.set_unless['mysql']['server_repl_password'] = secure_password
 
 package node['mysql']['package_name'] do
   action :install
@@ -88,4 +87,5 @@ execute "mysql-install-privileges" do
   command "#{node['mysql']['mysql_bin']} -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\" < #{grants_path}"
   action :nothing
   subscribes :run, resources("template[#{grants_path}]"), :immediately
+  only_if "#{node['mysql']['mysql_bin']} -u root -e 'show databases;'"
 end
