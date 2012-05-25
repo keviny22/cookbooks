@@ -23,8 +23,5 @@ include_recipe 'ruby'
 gem_package 'unicorn' do
   action :install
   gem_binary node["unicorn"]["gem_binary"]
-
-  if node["unicorn"]["version"]
-    version node["unicorn"]["version"]
-  end
+  version node["unicorn"]["version"]
 end
