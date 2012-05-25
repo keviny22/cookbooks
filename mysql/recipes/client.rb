@@ -24,6 +24,6 @@ mysql_packages = %w{mysql mysql-devel}
 mysql_packages.each do |mysql_pack|
   package mysql_pack do
     action :install
-    version [mysql_pack]['version']
+    version node[mysql_pack]['version']
   end
 end
