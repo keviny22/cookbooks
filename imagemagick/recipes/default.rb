@@ -17,4 +17,6 @@
 # limitations under the License.
 #
 
-package "ImageMagick"
+package "ImageMagick" do
+  version node["imagemagick"]["version"]
+end

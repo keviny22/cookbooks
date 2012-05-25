@@ -19,10 +19,12 @@
 
 package "memcached" do
   action :install
+  version node['memcached']['version']
 end
 
 package "libmemcached-devel" do
   package_name "libmemcached-devel"
+  version node['libmemcached-devel']['version']
   action :install
 end
 
@@ -37,11 +39,11 @@ template "/etc/sysconfig/memcached" do
   group "root"
   mode "0644"
   variables(
-    :listen => node[:memcached][:listen],
-    :user => node[:memcached][:user],
-    :port => node[:memcached][:port],
-    :maxconn => node[:memcached][:maxconn],
-    :memory => node[:memcached][:memory]
+    :listen => node['memcached']['listen'],
+    :user => node['memcached']['user'],
+    :port => node['memcached']['port'],
+    :maxconn => node['memcached']['maxconn'],
+    :memory => node['memcached']['memory']
   )
   notifies :restart, resources(:service => "memcached"), :immediately
 end

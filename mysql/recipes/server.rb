@@ -27,6 +27,7 @@ node.set_unless['mysql']['server_repl_password'] = secure_password
 
 package node['mysql']['package_name'] do
   action :install
+  version node['mysql']['version']
 end
 
 directory "#{node['mysql']['conf_dir']}/mysql/conf.d" do

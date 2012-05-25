@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: ruby
-# Recipe:: default
+# Cookbook Name:: mysql
+# Attributes:: client
 #
-# Copyright 2012, Intuit, Inc.
+# Copyright 2008-2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,23 +17,5 @@
 # limitations under the License.
 #
 
-remote_file "#{Chef::Config[:file_cache_path]}/libyaml.rpm" do
-  source node[:ruby][:libyaml][:url]
-end
-
-remote_file "#{Chef::Config[:file_cache_path]}/ruby.rpm" do
-  source node[:ruby][:url]
-end
-
-["libyaml", "ruby"].each do |pkg|
-  rpm_package pkg do
-    source "#{Chef::Config[:file_cache_path]}/#{pkg}.rpm"
-  end
-end
-
-file "/etc/prelink.conf.d/ruby.conf" do 
-  content "-b /usr/bin/ruby\n"
-  owner "root"
-  group "root"
-  mode "0644"
-end
+default['mysql']['version']            = "5.1.61-1.el6_2.1"
+default['mysql-devel']['version']      = "5.1.61-1.el6_2.1"

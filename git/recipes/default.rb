@@ -7,4 +7,6 @@
 # All rights reserved - Do Not Redistribute
 #
 #
-package "git"
+package "git" do
+  version node["git"]["version"]
+end
