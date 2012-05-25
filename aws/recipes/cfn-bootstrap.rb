@@ -22,7 +22,7 @@ end
 end
 
 remote_file "#{Chef::Config[:file_cache_path]}/aws-cfn-bootstrap-latest.tar.gz" do
-  source "https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz"
+  source node['aws']['cfn-bootstrap']['artifact_url']
   mode "600"
   not_if "pip freeze |grep aws-cfn-bootstrap"
 end

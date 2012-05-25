@@ -18,11 +18,11 @@
 #
 
 remote_file "#{Chef::Config[:file_cache_path]}/libyaml.rpm" do
-  source node['libyaml']['url']
+  source node['libyaml']['artifact_url']
 end
 
 remote_file "#{Chef::Config[:file_cache_path]}/ruby.rpm" do
-  source node['ruby']['url']
+  source node['ruby']['artifact_url']
 end
 
 ["libyaml", "ruby"].each do |pkg|
