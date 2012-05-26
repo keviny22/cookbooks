@@ -18,18 +18,7 @@
 # limitations under the License.
 #
 
-python_pkgs = value_for_platform(
-  ["debian","ubuntu"] => {
-    "default" => ["python","python-dev"]
-  },
-  ["centos","redhat","fedora"] => {
-    "default" => ["python26","python26-devel"]
-  },
-  ["freebsd"] => {
-    "default" => ["python"]
-  },
-  "default" => ["python","python-dev"]
-)
+python_pkgs = ["python26","python26-devel"]
 
 python_pkgs.each do |pkg|
   package pkg do

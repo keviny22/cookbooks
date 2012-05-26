@@ -17,22 +17,7 @@
 # limitations under the License.
 #
 
-case node['platform']
-when "ubuntu","debian"
-  %w{build-essential binutils-doc}.each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
-when "centos","redhat","fedora","amazon","scientific"
-  %w{gcc gcc-c++ kernel-devel make}.each do |pkg|
-    package pkg do
-      action :install
-    end
-  end
-end
-
-[ "autoconf", "flex", "bison" ] do |pkg|
+%w{autoconf bison flex gcc gcc-c++ kernel-devel libxml2-devel libxslt-devel make}.each do |pkg|
   package pkg do
     action :install
   end

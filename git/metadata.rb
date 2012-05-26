@@ -5,5 +5,5 @@ description      "Installs Git Client"
 version          "0.1.0"
 
 %w{ redhat }.each do |os|
-    supports os
+  supports os
 end

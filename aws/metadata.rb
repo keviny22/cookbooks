@@ -6,5 +6,5 @@ version          "0.1.0"
 depends          "python"
 
 %w{ redhat }.each do |os|
-    supports os
+  supports os
 end

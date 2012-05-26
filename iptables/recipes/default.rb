@@ -33,17 +33,17 @@ cookbook_file "/usr/sbin/rebuild-iptables" do
   mode 0755
 end
 
-case node[:platform]
-when "ubuntu", "debian"
-  iptables_save_file = "/etc/iptables/general"
-
-  template "/etc/network/if-pre-up.d/iptables_load" do
-    source "iptables_load.erb"
-    mode 0755
-    variables :iptables_save_file => iptables_save_file
-  end
-end
-
-
 iptables_rule "all_established"
 iptables_rule "all_icmp"
+
+service 'iptables' do
+  supports :start => true, :status => true, :restart => true, :reload => true
+  if node[:iptables][:enabled]
+    action [:enable, :start]
+  else
+    action [:disable, :stop]
+  end
+
+  # overloading reload for saving
+  reload_command 'service iptables save'
+end

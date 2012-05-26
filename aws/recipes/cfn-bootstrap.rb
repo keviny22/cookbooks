@@ -21,13 +21,13 @@ end
   end
 end
 
-remote_file "#{file_cache_path}/aws-cfn-bootstrap-latest.tar.gz" do
-  source "https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz"
+remote_file "#{Chef::Config[:file_cache_path]}/aws-cfn-bootstrap-latest.tar.gz" do
+  source node['aws']['cfn-bootstrap']['artifact_url']
   mode "600"
   not_if "pip freeze |grep aws-cfn-bootstrap"
 end
 
 execute "aws-bootstrap-cfn" do
-  command "easy_install /tmp/aws-cfn-bootstrap-latest.tar.gz"
+  command "easy_install #{Chef::Config[:file_cache_path]}/aws-cfn-bootstrap-latest.tar.gz"
   not_if "pip freeze |grep aws-cfn-bootstrap"
 end

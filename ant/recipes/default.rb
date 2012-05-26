@@ -1,15 +1,8 @@
-ant_pkgs = value_for_platform(
-  ["debian","ubuntu",] => {
-    "default" => ["ant","ant-contrib"]
-  },
-  ["centos","redhat","fedora" ] => {
-    "default" => ["ant","ant-contrib"]
-  },
-  "default" => ["ant","ant-contrib"]
-)
+include_recipe = 'java'
 
-ant_pkgs.each do |pkg|
+["ant","ant-contrib"].each do |pkg|
   package pkg do
     action :install
+    version node[pkg]['version']
   end
 end
