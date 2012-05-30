@@ -10,6 +10,8 @@ packages.each do |pkg|
   end
 end
 
-gem_package "aws-s3" do
+chef_gem "aws-s3" do
   action :install
 end
+
+require "aws/s3"
