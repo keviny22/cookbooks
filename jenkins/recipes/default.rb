@@ -71,10 +71,10 @@ node[:jenkins][:server][:plugins].each do |name|
   end
 end
 
-include_recipe "yum"
-
 pid_file = "/var/run/jenkins.pid"
 install_starts_service = false
+
+include_recipe 'yum'
 
 yum_key "jenkins" do
   url "#{node.jenkins.package_url}/redhat/jenkins-ci.org.key"
