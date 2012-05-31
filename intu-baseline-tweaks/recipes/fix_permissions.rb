@@ -9,7 +9,7 @@
 
 %w{/etc/resolv.conf}.each do |file|
   execute "Update #{file} permissions" do
-    command "chmod 664 #{file}"
+    command "chmod 644 #{file}"
     action :run
   end
 end
