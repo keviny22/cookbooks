@@ -21,7 +21,8 @@
 # limitations under the License.
 #
 
-default[:jenkins][:mirror] = "http://updates.jenkins-ci.org"
+default[:jenkins][:mirror] = "http://mirrors.jenkins-ci.org"
+default[:jenkins][:package_url] = "http://pkg.jenkins-ci.org"
 default[:jenkins][:java_home] = ENV['JAVA_HOME']
 
 default[:jenkins][:server][:home] = "/var/lib/jenkins"
@@ -33,7 +34,7 @@ default[:jenkins][:server][:port] = 8080
 default[:jenkins][:server][:host] = node[:fqdn]
 default[:jenkins][:server][:url]  = "http://#{node[:jenkins][:server][:host]}:#{node[:jenkins][:server][:port]}"
 
-default[:jenkins][:iptables_allow] = "enable"
+default[:jenkins][:iptables_allow] = "disable"
 
 #download the latest version of plugins, bypassing update center
 #example: ["git", "URLSCM", ...]
@@ -58,7 +59,13 @@ default[:jenkins][:node][:description] =
 default[:jenkins][:node][:executors] = 1
 
 #"Remote FS root"
-default[:jenkins][:node][:home] = "/home/jenkins"
+if node[:os] == "windows"
+  default[:jenkins][:node][:home] = "C:/jenkins"
+elsif node[:os] == "darwin"
+  default[:jenkins][:node][:home] = "/Users/jenkins"
+else
+  default[:jenkins][:node][:home] = "/home/jenkins"
+end
 
 #"Labels"
 default[:jenkins][:node][:labels] = (node[:tags] || []).join(" ")
@@ -72,11 +79,7 @@ default[:jenkins][:node][:mode] = "normal"
 #  "Launch slave agents via JNLP"                        -> "jnlp"
 #  "Launch slave via execution of command on the Master" -> "command"
 #  "Launch slave agents on Unix machines via SSH"         -> "ssh"
-if node[:os] == "windows"
-  default[:jenkins][:node][:launcher] = "jnlp"
-else
-  default[:jenkins][:node][:launcher] = "ssh"
-end
+default[:jenkins][:node][:launcher] = "ssh"
 
 #"Availability"
 #  "Keep this slave on-line as much as possible"                   -> "always"
@@ -109,3 +112,5 @@ default[:jenkins][:http_proxy][:listen_ports]         = [ 80 ]
 default[:jenkins][:http_proxy][:host_name]            = nil
 default[:jenkins][:http_proxy][:host_aliases]         = []
 default[:jenkins][:http_proxy][:client_max_body_size] = "1024m"
+default[:jenkins][:http_proxy][:basic_auth_username] = "jenkins"
+default[:jenkins][:http_proxy][:basic_auth_password] = "jenkins"

@@ -3,6 +3,7 @@
 # Based on hudson
 # Recipe:: default
 #
+# Author:: AJ Christensen <aj@junglist.gen.nz>
 # Author:: Doug MacEachern <dougm@vmware.com>
 # Author:: Fletcher Nichol <fnichol@nichol.ca>
 #
@@ -20,6 +21,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+include_recipe 'java'
 
 pkey = "#{node[:jenkins][:server][:home]}/.ssh/id_rsa"
 tmp = "/tmp"
@@ -60,35 +63,29 @@ end
 
 node[:jenkins][:server][:plugins].each do |name|
   remote_file "#{node[:jenkins][:server][:home]}/plugins/#{name}.hpi" do
-    source "#{node[:jenkins][:mirror]}/latest/#{name}.hpi"
+    source "#{node[:jenkins][:mirror]}/plugins/#{name}/latest/#{name}.hpi"
     backup false
     owner node[:jenkins][:server][:user]
     group node[:jenkins][:server][:group]
-    action :nothing
-  end
-
-  http_request "HEAD #{node[:jenkins][:mirror]}/latest/#{name}.hpi" do
-    message ""
-    url "#{node[:jenkins][:mirror]}/latest/#{name}.hpi"
-    action :head
-    if File.exists?("#{node[:jenkins][:server][:home]}/plugins/#{name}.hpi")
-      headers "If-Modified-Since" => File.mtime("#{node[:jenkins][:server][:home]}/plugins/#{name}.hpi").httpdate
-    end
-    notifies :create, resources(:remote_file => "#{node[:jenkins][:server][:home]}/plugins/#{name}.hpi"), :immediately
+    action :create_if_missing
   end
 end
 
-#see http://jenkins-ci.org/redhat/
-key_url = "http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key"
+include_recipe "yum"
 
-remote = "#{node[:jenkins][:mirror]}/latest/redhat/jenkins.rpm"
-package_provider = Chef::Provider::Package::Rpm
 pid_file = "/var/run/jenkins.pid"
 install_starts_service = false
 
-execute "add-jenkins-key" do
-  command "rpm --import #{key_url}"
-  action :nothing
+yum_key "jenkins" do
+  url "#{node.jenkins.package_url}/redhat/jenkins-ci.org.key"
+  action :add
+end
+
+yum_repository "jenkins" do
+  description "repository for jenkins"
+  url "#{node.jenkins.package_url}/redhat/"
+  key "jenkins"
+  action :add
 end
 
 #"jenkins stop" may (likely) exit before the process is actually dead
@@ -108,6 +105,12 @@ ruby_block "netstat" do
   action :nothing
 end
 
+service "jenkins" do
+  supports [ :stop, :start, :restart, :status ]
+  status_command "test -f #{pid_file} && kill -0 `cat #{pid_file}`"
+  action :nothing
+end
+
 ruby_block "block_until_operational" do
   block do
     until IO.popen("netstat -lnt").entries.select { |entry|
@@ -121,54 +124,27 @@ ruby_block "block_until_operational" do
       url = URI.parse("#{node.jenkins.server.url}/job/test/config.xml")
       res = Chef::REST::RESTRequest.new(:GET, url, nil).call
       break if res.kind_of?(Net::HTTPSuccess) or res.kind_of?(Net::HTTPNotFound)
-      Chef::Log.debug "service[jenkins] not responding OK to GET /job/test/config.xml #{res.inspect}"
+      Chef::Log.debug "service[jenkins] not responding OK to GET / #{res.inspect}"
       sleep 1
     end
   end
   action :nothing
 end
 
-service "jenkins" do
-  supports [ :stop, :start, :restart, :status ]
-  #"jenkins status" will exit(0) even when the process is not running
-  status_command "test -f #{pid_file} && kill -0 `cat #{pid_file}`"
-  action :nothing
-end
-
-local = File.join(tmp, File.basename(remote))
-
-remote_file local do
-  source remote
-  backup false
-  notifies :stop, "service[jenkins]", :immediately
-  notifies :create, "ruby_block[netstat]", :immediately #wait a moment for the port to be released
-  notifies :run, "execute[add-jenkins-key]", :immediately
+log "jenkins: install and start" do
   notifies :install, "package[jenkins]", :immediately
-  unless install_starts_service
-    notifies :start, "service[jenkins]", :immediately
-  end
-  if node[:jenkins][:server][:use_head] #XXX remove when CHEF-1848 is merged
-    action :nothing
+  notifies :start, "service[jenkins]", :immediately unless install_starts_service
+  notifies :create, "ruby_block[block_until_operational]", :immediately
+  not_if do
+    File.exists? "/usr/share/jenkins/jenkins.war"
   end
 end
 
-http_request "HEAD #{remote}" do
-  only_if { node[:jenkins][:server][:use_head] } #XXX remove when CHEF-1848 is merged
-  message ""
-  url remote
-  action :head
-  if File.exists?(local)
-    headers "If-Modified-Since" => File.mtime(local).httpdate
-  end
-  notifies :create, "remote_file[#{local}]", :immediately
-end
+template "/etc/default/jenkins"
 
-#this is defined after http_request/remote_file because the package
-#providers will throw an exception if `source' doesn't exist
 package "jenkins" do
-  provider package_provider
-  source local
   action :nothing
+  notifies :create, "template[/etc/default/jenkins]", :immediately
 end
 
 # restart if this run only added new plugins
@@ -186,10 +162,25 @@ log "plugins updated, restarting jenkins" do
       }.size > 0
     end
   end
+
+  action :nothing
 end
 
 # Front Jenkins with an HTTP server
 case node[:jenkins][:http_proxy][:variant]
+when "nginx"
+  include_recipe "jenkins::proxy_nginx"
 when "apache2"
   include_recipe "jenkins::proxy_apache2"
+end
+
+if node.jenkins.iptables_allow == "enable"
+  include_recipe "iptables"
+  iptables_rule "port_jenkins" do
+    if node[:jenkins][:iptables_allow] == "enable"
+      enable true
+    else
+      enable false
+    end
+  end
 end
