@@ -32,7 +32,7 @@ else
   www_redirect = false
 end
 
-host_name = node[:jenkins][:http_proxy][:host_name] || node[:fqdn]
+host_name = node[:fqdn] ||= 'localhost'
 
 template "#{node.apache.dir}/htpasswd" do
   variables( :username => node.jenkins.http_proxy.basic_auth_username,
@@ -60,7 +60,7 @@ template "#{node[:apache][:dir]}/sites-available/jenkins" do
 end
 
 apache_site "000-default" do
-  enable  false
+  enable false
 end
 
 apache_site "jenkins" do

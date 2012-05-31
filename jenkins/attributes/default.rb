@@ -31,7 +31,7 @@ default[:jenkins][:server][:user] = "jenkins"
 default[:jenkins][:server][:group] = node[:jenkins][:server][:user]
 
 default[:jenkins][:server][:port] = 8080
-default[:jenkins][:server][:host] = node[:fqdn]
+default[:jenkins][:server][:host] = node[:fqdn] ||= 'localhost'
 default[:jenkins][:server][:url]  = "http://#{node[:jenkins][:server][:host]}:#{node[:jenkins][:server][:port]}"
 
 default[:jenkins][:iptables_allow] = "disable"
@@ -59,13 +59,7 @@ default[:jenkins][:node][:description] =
 default[:jenkins][:node][:executors] = 1
 
 #"Remote FS root"
-if node[:os] == "windows"
-  default[:jenkins][:node][:home] = "C:/jenkins"
-elsif node[:os] == "darwin"
-  default[:jenkins][:node][:home] = "/Users/jenkins"
-else
-  default[:jenkins][:node][:home] = "/home/jenkins"
-end
+default[:jenkins][:node][:home] = "/home/jenkins"
 
 #"Labels"
 default[:jenkins][:node][:labels] = (node[:tags] || []).join(" ")
@@ -106,7 +100,7 @@ default[:jenkins][:node][:jvm_options] = nil
 #jenkins master defaults to: "#{ENV['HOME']}/.ssh/id_rsa"
 default[:jenkins][:node][:ssh_private_key] = nil
 
-default[:jenkins][:http_proxy][:variant]              = nil
+default[:jenkins][:http_proxy][:variant]              = "apache2"
 default[:jenkins][:http_proxy][:www_redirect]         = "disable"
 default[:jenkins][:http_proxy][:listen_ports]         = [ 80 ]
 default[:jenkins][:http_proxy][:host_name]            = nil
