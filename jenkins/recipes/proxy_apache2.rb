@@ -34,12 +34,14 @@ end
 
 host_name = node[:fqdn] ||= 'localhost'
 
-template "#{node.apache.dir}/htpasswd" do
-  variables( :username => node.jenkins.http_proxy.basic_auth_username,
-             :password => node.jenkins.http_proxy.basic_auth_password)
-  owner node.apache.user
-  group node.apache.user
-  mode 0600
+if node[:jenkins][:http_proxy][:basic_auth]
+  template "#{node.apache.dir}/htpasswd" do
+    variables( :username => node.jenkins.http_proxy.basic_auth_username,
+               :password => node.jenkins.http_proxy.basic_auth_password)
+    owner node.apache.user
+    group node.apache.user
+    mode 0600
+  end
 end
 
 template "#{node[:apache][:dir]}/sites-available/jenkins" do
