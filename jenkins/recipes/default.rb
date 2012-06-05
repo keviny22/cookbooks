@@ -173,14 +173,3 @@ when "nginx"
 when "apache2"
   include_recipe "jenkins::proxy_apache2"
 end
-
-if node.jenkins.iptables_allow == "enable"
-  include_recipe "iptables"
-  iptables_rule "port_jenkins" do
-    if node[:jenkins][:iptables_allow] == "enable"
-      enable true
-    else
-      enable false
-    end
-  end
-end
