@@ -40,7 +40,7 @@ end
 service "mysql" do
   service_name node['mysql']['service_name']
   supports :status => true, :restart => true, :reload => true
-  action :nothing
+  action :enabled
 end
 
 skip_federated = node['platform_version'].to_f < 6.0
