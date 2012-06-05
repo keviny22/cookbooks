@@ -19,22 +19,24 @@
 
 package "iptables" 
 
-execute "rebuild-iptables" do
-  command "/usr/sbin/rebuild-iptables"
-  action :nothing
-end
+if node[:iptables][:enabled]
+  execute "rebuild-iptables" do
+    command "/usr/sbin/rebuild-iptables"
+    action :nothing
+  end
 
-directory "/etc/iptables.d" do
-  action :create
-end
+  directory "/etc/iptables.d" do
+    action :create
+  end
 
-cookbook_file "/usr/sbin/rebuild-iptables" do
-  source "rebuild-iptables"
-  mode 0755
-end
+  cookbook_file "/usr/sbin/rebuild-iptables" do
+    source "rebuild-iptables"
+    mode 0755
+  end
 
-iptables_rule "all_established"
-iptables_rule "all_icmp"
+  iptables_rule "all_established"
+  iptables_rule "all_icmp"
+end
 
 service 'iptables' do
   supports :start => true, :status => true, :restart => true, :reload => true
