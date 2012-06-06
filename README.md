@@ -12,4 +12,4 @@ The easiest way to get started is to launch the [Single Instance Baseline Templa
 
 **Manually Provisioned Instance**
 
-To get started without Cloud Formation, checkout the README in the [Intuit Chef Starter Repo](https://github.com/live-community/chef-repo)
+To get started without Cloud Formation, checkout the README in the [Intuit Chef Starter Repo](https://github.com/live-community/chef-repo/blob/master/README.md).
