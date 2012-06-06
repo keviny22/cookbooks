@@ -10,7 +10,7 @@ prefix=intu-lc
 
 # Pull the git commit from Jenkins variable
 sha=$GIT_COMMIT
-accounts=$ACCOUNTS
 
 # Build and upload artifact
-heirloom build -c $class -p $prefix -s $sha -d $dir -a $accounts
+# Cookbooks builds are set to public
+heirloom build -c $class -p $prefix -s $sha -d $dir -o
