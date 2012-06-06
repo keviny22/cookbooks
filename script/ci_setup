@@ -7,10 +7,10 @@ dir=`echo $script_dir | sed -e 's/\/script//'`
 # Set the build parameters
 class=cookbooks
 prefix=intu-lc
-accounts="live_community.aws.pre-prod.us@intuit.com,live_community.aws.prod.us@intuit.com"
 
 # Pull the git commit from Jenkins variable
 sha=$GIT_COMMIT
+accounts=$ACCOUNTS
 
 # Build and upload artifact
 heirloom build -c $class -p $prefix -s $sha -d $dir -a $accounts
