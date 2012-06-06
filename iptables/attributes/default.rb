@@ -1,1 +1,1 @@
-default['iptables']['enabled'] = true
+default['iptables']['enabled'] = false
