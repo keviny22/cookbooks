@@ -6,7 +6,7 @@ dir=`echo $script_dir | sed -e 's/\/script//'`
 
 # Set the build parameters
 class=cookbooks
-prefix=intu-lc
+prefix=intu-artifacts
 
 # Pull the git commit from Jenkins variable
 sha=$GIT_COMMIT
