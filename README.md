@@ -1,7 +1,7 @@
 Chef Cookbooks
 ==============
 
-I'm the Intuit Chef Cookbooks Repository.  I am going to contain clean recipes that have been tested on Intuit certified baseline AMIs.
+I'm the Intuit Chef Cookbooks Repository.  I am going to contain clean recipes that have been tested on Intuit (RHEL6) baseline AMIs.
 
 Getting Started
 ---------------
