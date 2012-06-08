@@ -11,6 +11,12 @@ prefix=intu-artifacts
 # Pull the git commit from Jenkins variable
 sha=$GIT_COMMIT
 
+# Chef expects the cookbooks in cookbooks directory
+mkdir $dir/cookbooks
+mv $dir/* $dir/cookbooks
+mv $dir/.git* $dir/coobooks
+echo "GIT_SHA=$GIT_COMMIT" > $dir/cookbooks/.build
+
 # Build and upload artifact
 # Cookbooks builds are set to public
 heirloom build -c $class -p $prefix -s $sha -d $dir -o
