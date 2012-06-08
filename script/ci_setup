@@ -12,10 +12,11 @@ prefix=intu-artifacts
 sha=$GIT_COMMIT
 
 # Chef expects the cookbooks in cookbooks directory
-mkdir $dir/cookbooks
-mv $dir/* $dir/cookbooks
-echo "GIT_SHA=$GIT_COMMIT" > $dir/cookbooks/.build
+cd $dir
+mkdir cookbooks
+mv * cookbooks
+echo "GIT_SHA=$GIT_COMMIT" > ./cookbooks/.build
 
 # Build and upload artifact
 # Cookbooks builds are set to public
-heirloom build -c $class -p $prefix -s $sha -d $dir -o
+heirloom build -c $class -p $prefix -s $sha -d . -o
