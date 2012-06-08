@@ -14,7 +14,6 @@ sha=$GIT_COMMIT
 # Chef expects the cookbooks in cookbooks directory
 mkdir $dir/cookbooks
 mv $dir/* $dir/cookbooks
-mv $dir/.git* $dir/coobooks
 echo "GIT_SHA=$GIT_COMMIT" > $dir/cookbooks/.build
 
 # Build and upload artifact
