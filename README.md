@@ -1,7 +1,12 @@
 Chef Cookbooks
 ==============
 
-I'm the Intuit Chef Cookbooks Repository.  I am going to contain clean recipes that have been tested on Intuit (RHEL6) baseline AMIs.
+I'm the Intuit Chef Cookbooks library.  I contain recipes that have been tested on Intuit's (RHEL6) baseline AMIs.
+
+How To Use This Library
+-----------------------
+
+This library is meant to save engineers the hours invested by others to write cookbooks for the common applications which are tested with our baseline.  The intention is this repository will be forked into your own source control and additionall application specific cookbooks added for your application.
 
 Getting Started
 ---------------
