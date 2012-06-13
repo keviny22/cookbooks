@@ -121,10 +121,9 @@ def install_ruby_dependencies(rubie)
   pkgs = []
   case rubie
   when /^ruby-/, /^ree-/, /^rbx-/, /^kiji/
-      pkgs = %w{ gcc-c++ patch readline readline-devel zlib zlib-devel
-                 libffi-devel openssl-devel }
-      pkgs += %w{ git subversion autoconf } if rubie =~ /^ruby-head$/
-    end
+    pkgs = %w{ gcc-c++ patch readline readline-devel zlib zlib-devel
+               libffi-devel openssl-devel }
+    pkgs += %w{ git subversion autoconf } if rubie =~ /^ruby-head$/
   end
 
   pkgs.each do |pkg|
