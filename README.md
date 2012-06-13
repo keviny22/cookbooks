@@ -1,7 +1,7 @@
 Chef Cookbooks
 ==============
 
-I'm the Intuit Chef Cookbooks library.  I contain recipes that have been tested on Intuit's (RHEL6) baseline AMIs.
+I'm the Intuit Chef Cookbooks library.  I contain recipes that have been tested on Red Hat 6.
 
 How To Use This Library
 -----------------------
