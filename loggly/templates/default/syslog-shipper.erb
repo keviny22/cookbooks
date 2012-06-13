@@ -1,0 +1,62 @@
+#!/bin/bash
+#chkconfig: 235 80 40
+# description: tails log files and ships them to loggly
+
+. /etc/init.d/functions
+
+PID_FILE=/var/run/syslog-shipper.pid
+
+start () {
+  if [ ! -f $PID_FILE ]; then
+    logs=`cat /etc/syslog-shipper/logs_to_tail`
+    daemon "/usr/bin/syslog-shipper -s <%= @server %>:<%= @port %> $logs &"
+    RETVAL=$?
+    echo
+    if [ $RETVAL -eq 0 ]; then
+      pgrep -f '/usr/bin/ruby -rubygems /usr/bin/syslog-shipper' > $PID_FILE
+    fi
+    return $RETVAL
+  else
+    echo "Syslog Shipper Running"
+    exit 0
+  fi
+}
+
+stop () {
+  if [ -f $PID_FILE ]; then
+    /usr/bin/kill `cat $PID_FILE`
+    /bin/rm $PID_FILE
+  else
+    echo "Syslog Shipper Not Running"
+    exit 1
+  fi
+}
+
+status () {
+  if [ -f $PID_FILE ] && [ `pgrep -f '/usr/bin/ruby -rubygems /usr/bin/syslog-shipper'` -eq `cat $PID_FILE` ]; then
+    echo "Syslog Shipper Running"
+    exit 0
+  else
+    echo "Syslog Shipper Not Running"
+    exit 1
+  fi
+}
+
+case "$1" in
+'start')
+  start
+;;
+
+'stop')
+  stop
+;;
+
+'status')
+  status
+;;
+
+'restart')
+  stop
+  start
+;;
+esac
