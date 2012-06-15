@@ -4,13 +4,6 @@
 script_dir="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 dir=`echo $script_dir | sed -e 's/\/script//'`
 
-# Set the build parameters
-class=cookbooks
-prefix=intu-artifacts
-
-# Pull the git commit from Jenkins variable
-sha=$GIT_COMMIT
-
 # Chef expects the cookbooks in cookbooks directory
 cd $dir
 mkdir cookbooks
@@ -19,4 +12,5 @@ echo "GIT_SHA=$GIT_COMMIT" > ./cookbooks/.build
 
 # Build and upload artifact
 # Cookbooks builds are set to public
-heirloom build -c $class -p $prefix -s $sha -d . -o
+rvm system
+/usr/bin/heirloom build -n cookbooks -i $GIT_COMMIT -d . -p
