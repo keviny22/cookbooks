@@ -33,7 +33,7 @@ end
 service "tomcat" do
   service_name "tomcat6"
   supports :restart => true, :status => true
-  action [:enable, :start]
+  action [:enable]
 end
 
 template "/etc/sysconfig/tomcat6" do
