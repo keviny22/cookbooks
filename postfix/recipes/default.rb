@@ -42,7 +42,7 @@ end
     source "#{cfg}.cf.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0600
     notifies :restart, resources(:service => "postfix")
   end
 end
