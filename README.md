@@ -13,7 +13,7 @@ Getting Started
 
 **Cloud Formation**
 
-The easiest way to get started is to launch the [Single Instance Baseline Template](https://raw.github.com/live-community/cloud_formation_templates/master/vpc/baseline/single_instance.json) from the [Cloud Formation Templates Repo](https://github.com/live-community/cloud_formation_templates). 
+The easiest way to get started is to launch the [Single Instance Baseline Template](https://github.com/live-community/cloud_formation_templates/blob/master/vpc/all-in-one/baseline/single_instance.json) from the [Cloud Formation Templates Repo](https://github.com/live-community/cloud_formation_templates). 
 
 **Manually Provisioned Instance**
 
