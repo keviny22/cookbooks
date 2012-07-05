@@ -59,7 +59,8 @@ uucp,news.crit                                          /var/log/spooler
 # Save boot messages also to boot.log
 local7.*                                                /var/log/boot.log
 
-
+# include additional config files
+$IncludeConfig /etc/rsyslog.d/*.conf
 
 # ### begin forwarding rule ###
 # The statement between the begin ... end define a SINGLE forwarding
