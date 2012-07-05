@@ -62,12 +62,14 @@ module Opscode
           begin
             http     = Net::HTTP.new "#{domain}.loggly.com"
             input_id = find_input_id domain, input_name
-            request  = Net::HTTP::Post.new "/api/inputs/#{input_id}"
+            request  = Net::HTTP::Post.new "/api/inputs/#{input_id}/discover"
 
             request.basic_auth node[:loggly][:username], node[:loggly][:password]
+            Chef::Log.debug "Loggly/#{domain}: Making POST request to enable discovery mode"
             response = http.request request
             Chef::Log.debug "Loggly/#{domain}: Received data on the following inputs:"
             Chef::Log.debug response.body.inspect
+            Chef::Log.debug "Loggly/#{domain}: Discovery mode enabled"
             true
           rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ETIMEDOUT,
             Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, JSON::ParserError => e
@@ -95,11 +97,13 @@ module Opscode
         return input_id
       end
 
-      def find_input_port(domain,input_name)
+      def find_input_port(domain, input_name)
+        Chef::Log.debug "Loggly/#{domain}: Looking up input port for input '#{input_name}'"
         port = nil
         get_inputs(domain).each do |input|
           if input["name"] == input_name
             port = input["port"]
+            Chef::Log.debug "Loggly/#{domain}: Found input port of '#{port}' for input '#{input_name}'"
           end
         end
         return port
@@ -132,7 +136,7 @@ module Opscode
         end
       end
 
-      def delete_input(domain,input_name)
+      def delete_input(domain, input_name)
         success = false
         input_id = nil
         if input_exists?(domain,input_name)
