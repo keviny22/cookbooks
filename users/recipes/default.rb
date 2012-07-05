@@ -25,7 +25,7 @@ users.each do |user|
 
   u = data_bag_item('users', user)
 
-  if u['groups'].include?('sysadmin')
+  if u['groups'] && u['groups'].include?('sysadmin')
     sysadmin_group << u['id']
   end
 
