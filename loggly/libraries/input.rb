@@ -57,15 +57,15 @@ module Opscode
 
       # enables the discovery mode for an input
       def enable_input_discovery_mode(domain, input_name)
-        Chef::Log.debug("Loggly/#{domain}: Attempting to enable discovery mode on input '#{input_name}'")
+        Chef::Log.debug "Loggly/#{domain}: Attempting to enable discovery mode on input '#{input_name}'"
         if input_exists? domain, input_name
           begin
             http     = Net::HTTP.new "#{domain}.loggly.com"
             input_id = find_input_id domain, input_name
-            request  = Net::HTTP::Post.new("/api/inputs/#{input_id)}")
+            request  = Net::HTTP::Post.new "/api/inputs/#{input_id}"
 
             request.basic_auth node[:loggly][:username], node[:loggly][:password]
-            response = http.request(request)
+            response = http.request request
             Chef::Log.debug "Loggly/#{domain}: Received data on the following inputs:"
             Chef::Log.debug response.body.inspect
             true
