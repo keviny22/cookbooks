@@ -61,3 +61,10 @@ pkgs.each do |pkg|
     notifies :create, "ruby_block[update-java-alternatives]"
   end
 end
+
+file "/etc/profile.d/jdk.sh" do
+  content <<-EOS
+    export JAVA_HOME=#{node['java']["java_home"]}
+  EOS
+  mode 0755
+end
