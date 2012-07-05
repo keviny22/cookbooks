@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe 'sudo'
+
 sysadmin_group = Array.new
 
 users = data_bag('users')
