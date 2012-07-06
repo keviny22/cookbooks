@@ -19,4 +19,18 @@ file "/etc/profile.d/aws-ec2.sh" do
   mode 0755
 end
 
+file "/root/.ec2_cert" do
+  content node['aws']['ec2-tools']['crt']
+  owner 'root'
+  group 'root'
+  mode 0600
+end
+
+file "/root/.ec2_private_key" do
+  content node['aws']['ec2-tools']['key']
+  owner 'root'
+  group 'root'
+  mode 0600
+end
+
 package "intu-amzn-ec2-tools"
