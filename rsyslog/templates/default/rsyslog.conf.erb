@@ -9,6 +9,7 @@
 $ModLoad imuxsock.so # provides support for local system logging (e.g. via logger command)
 $ModLoad imklog.so # provides kernel logging support (previously done by rklogd)
 #$ModLoad immark.so  # provides --MARK-- message capability
+$ModLoad imfile # provides support for watching text files
 
 # Provides UDP syslog reception
 #$ModLoad imudp.so
