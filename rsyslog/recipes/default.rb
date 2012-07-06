@@ -19,6 +19,7 @@ template '/etc/rsyslog.conf' do
   owner 'root'
   group 'root'
   mode 0644
+  variables :spool_directory => node['rsyslog']['spool_directory']
   notifies :restart, 'service[rsyslog]'
 end
 
