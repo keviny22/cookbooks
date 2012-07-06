@@ -1,7 +1,6 @@
 include_recipe 'ruby'
 include_recipe 'build-essential'
-
-package 'rpm-build'
+include_recipe 'rpm-build'
 
 gem_package 'fpm' do
   action :install
