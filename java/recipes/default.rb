@@ -18,4 +18,14 @@
 # limitations under the License.
 #
 
+package 'jdk' do
+  action :remove
+end
+
+['/etc/profile.d/java.sh', '/etc/profile.d/java.csh'].each do |f|
+  file f do
+    action :delete
+  end
+end
+
 include_recipe "java::#{node['java']['install_flavor']}"

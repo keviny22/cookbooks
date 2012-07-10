@@ -1,5 +1,6 @@
 package 'rsyslog' do
   action :install
+  version node['rsyslog']['version']
 end
 
 directory node['rsyslog']['extra_config_directory'] do
