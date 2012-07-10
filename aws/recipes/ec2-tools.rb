@@ -6,8 +6,9 @@ include_recipe 'java'
   end
 end
 
-execute "Remove Baseline AWS Tools" do
-  command "/bin/rm -rf /usr/local/ec2"
+directory "/usr/local/ec2" do
+  action :delete
+  recursive true
 end
 
 file "/etc/profile.d/aws-ec2.sh" do
