@@ -18,9 +18,8 @@
 # limitations under the License.
 #
 
-rpm_package 'jdk-1.6.0_31-fcs' do
+package 'jdk' do
   action :remove
-  only_if 'rpm -q jdk-1.6.0_31-fcs'
 end
 
 ['/etc/profile.d/java.sh', '/etc/profile.d/java.csh'].each do |f|
