@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exist with error if any command returns non zero
+set -e
+
 # Source my jenkins config if available
 if [ -f ~/.jenkins.sh ]; then
   . ~/.jenkins.sh
@@ -12,7 +15,9 @@ dir=`echo $script_dir | sed -e 's/\/script//'`
 # Chef expects the cookbooks in cookbooks directory
 cd $dir
 mkdir cookbooks
-/bin/mv * cookbooks
+for f in $(ls |egrep -v '^cookbooks$'); do
+  /bin/mv $f cookbooks
+done
 echo "GIT_SHA=$GIT_COMMIT" > ./cookbooks/.build
 
 # Build and upload artifact
