@@ -15,7 +15,7 @@ dir=`echo $script_dir | sed -e 's/\/script//'`
 # Chef expects the cookbooks in cookbooks directory
 cd $dir
 mkdir cookbooks
-for f in $(ls |egrep -v '^cookbooks$'); do
+for f in $(ls -a |egrep -v '^cookbooks$' |egrep -v '^\.$|^\.\.$'); do
   /bin/mv $f cookbooks
 done
 echo "GIT_SHA=$GIT_COMMIT" > ./cookbooks/.build
