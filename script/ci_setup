@@ -5,6 +5,9 @@ if [ -f ~/.jenkins.sh ]; then
   . ~/.jenkins.sh
 fi
 
+# Exit with error if any command returns non zero
+set -e
+
 # Set build dir to root below script dir
 script_dir="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 dir=`echo $script_dir | sed -e 's/\/script//'`
@@ -12,10 +15,15 @@ dir=`echo $script_dir | sed -e 's/\/script//'`
 # Chef expects the cookbooks in cookbooks directory
 cd $dir
 mkdir cookbooks
-/bin/mv * cookbooks
+for f in $(ls -a |egrep -v '^cookbooks$' |egrep -v '^\.$|^\.\.$|^\.git$'); do
+  /bin/mv $f cookbooks
+done
 echo "GIT_SHA=$GIT_COMMIT" > ./cookbooks/.build
 
 # Build and upload artifact
 # Cookbooks builds are set to public
 rvm system
-/usr/bin/heirloom build -n cookbooks -i $GIT_COMMIT -b intu-artifacts -g -p
+/usr/bin/heirloom build -n cookbooks -i $GIT_COMMIT -b intu-artifacts -g -p \
+                  -r us-west-1 \
+                  -r us-west-2 \
+                  -r us-east-1
