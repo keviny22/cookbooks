@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Exist with error if any command returns non zero
-set -e
-
 # Source my jenkins config if available
 if [ -f ~/.jenkins.sh ]; then
   . ~/.jenkins.sh
 fi
+
+# Exit with error if any command returns non zero
+set -e
 
 # Set build dir to root below script dir
 script_dir="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -23,4 +23,7 @@ echo "GIT_SHA=$GIT_COMMIT" > ./cookbooks/.build
 # Build and upload artifact
 # Cookbooks builds are set to public
 rvm system
-/usr/bin/heirloom build -n cookbooks -i $GIT_COMMIT -b intu-artifacts -g -p
+/usr/bin/heirloom build -n cookbooks -i $GIT_COMMIT -b intu-artifacts -g -p -r \
+                  us-west-1 \
+                  us-west-2 \
+                  us-east-1
