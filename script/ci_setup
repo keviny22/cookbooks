@@ -23,7 +23,7 @@ echo "GIT_SHA=$GIT_COMMIT" > ./cookbooks/.build
 # Build and upload artifact
 # Cookbooks builds are set to public
 rvm system
-/usr/bin/heirloom build -n cookbooks -i $GIT_COMMIT -b intu-artifacts -g -p -r \
-                  us-west-1 \
-                  us-west-2 \
-                  us-east-1
+/usr/bin/heirloom build -n cookbooks -i $GIT_COMMIT -b intu-artifacts -g -p \
+                  -r us-west-1 \
+                  -r us-west-2 \
+                  -r us-east-1
