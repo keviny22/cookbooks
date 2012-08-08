@@ -6,7 +6,7 @@ action :download do
   force = new_resource.force ? '--force' : ''
 
   execute "Downloading #{file_name} from s3" do
-    command "s3cmd #{force} get s3://#{bucket}/#{object_name} #{file_name}"
+    command "s3cmd #{force} get s3://#{bucket}#{object_name} #{file_name}"
   end
 
   file file_name do
