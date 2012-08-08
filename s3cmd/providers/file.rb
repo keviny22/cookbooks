@@ -3,7 +3,7 @@ action :download do
   file_name = new_resource.file_name
   bucket = new_resource.bucket
   object_name = new_resource.object_name
-  object_name.slice!(0) if object_name.start_with '/'
+  object_name.slice!(0) if object_name.start_with? '/'
   force = new_resource.force ? '--force' : ''
 
   execute "Downloading #{file_name} from s3" do
