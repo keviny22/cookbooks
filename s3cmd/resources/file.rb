@@ -6,4 +6,4 @@ attribute :object_name, :kind_of => String
 attribute :owner, :kind_of => String, :default => 'root'
 attribute :group, :kind_of => String, :default => 'root'
 attribute :mode, :kind_of => String, :default => '0600'
-attribute :force, :kind_of => Boolean, :default => true
+attribute :force, :kind_of => [ TrueClass, FalseClass ], :default => true
