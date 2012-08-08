@@ -1,5 +1,3 @@
-require 'etc'
-
 action :download do
 
   file_name = new_resource.file_name
