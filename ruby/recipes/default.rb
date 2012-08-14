@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "build-essential"
+
 remote_file "#{Chef::Config[:file_cache_path]}/libyaml.rpm" do
   source node['libyaml']['artifact_url']
   not_if "which /usr/bin/ruby"
