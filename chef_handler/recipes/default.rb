@@ -27,7 +27,7 @@ execute "Install gems required for tinder" do
   command "/opt/chef/embedded/bin/gem install -l"
   cwd Chef::Config[:file_cache_path] + "/gems/*"
   action :nothing
-end.run_action(:execute)
+end.run_action(:run)
 
 Gem.clear_paths
 require 'tinder'
