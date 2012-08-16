@@ -18,20 +18,6 @@
 # limitations under the License.
 #
 
-remote_directory "#{Chef::Config[:file_cache_path]}/gems" do
-  source 'gems'
-  action :nothing
-end.run_action(:create)
-
-execute "Install gems required for tinder" do
-  command "/opt/chef/embedded/bin/gem install -l *"
-  cwd "#{Chef::Config[:file_cache_path]}/gems"
-  action :nothing
-end.run_action(:run)
-
-Gem.clear_paths
-require 'tinder'
-
 Chef::Log.info("Chef Handlers will be at: #{node['chef_handler']['handler_path']}")
 
 remote_directory node['chef_handler']['handler_path'] do

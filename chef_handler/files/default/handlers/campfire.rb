@@ -1,21 +1,6 @@
-#!/usr/bin/env ruby
-
-# Chef Exception & Reporting Handler for Campfire.
-#
-# Author:: Greg Albrecht <mailto:gba@splunk.com>
-# Author:: Brian Scott <mailto:brainscott@gmail.com>
-# Copyright:: Copyright 2012 Splunk, Inc.
-# License:: Apache License 2.0
-#
-
-require 'rubygems'
-require 'chef/handler'
-require 'tinder'
-
 class Chef
   class Handler
     class Campfire < Chef::Handler
-      VERSION = '2.0.2'
 
       def initialize(subdomain, token, room, message)
         @subdomain = subdomain
@@ -25,21 +10,13 @@ class Chef
       end
 
       def report
-        if run_status.failed?
-          Chef::Log.error('Creating Campfire exception report.')
-          campfire = Tinder::Campfire.new(@subdomain, :token => @token,
-                                                      :ssl_options => { :verify => false })
-
-          room = if @room.nil?
-                   campfire.rooms.first
-                 else
-                   campfire.find_room_by_id(@room.to_i)
-                 end
-
-          room.speak([@message, node.hostname, run_status.formatted_exception].join(' - '))
-          room.paste(Array(backtrace).join('\n'))
-        end
+        base_cmd = "curl -k -u #{@token}:X -H 'Content-Type: application/json' -d"
+        message = "{'message':{'body':'#{run_status.formatted_exception}'}}"
+        url = "https://#{@subdomain}/room/#{@room}/speak.json"
+        cmd = "#{base_cmd} #{message} #{url}" 
+        `#{cmd}`
       end
+
     end
   end
 end
