@@ -24,8 +24,8 @@ remote_directory "#{Chef::Config[:file_cache_path]}/gems" do
 end.run_action(:create)
 
 execute "Install gems required for tinder" do
-  command "/opt/chef/embedded/bin/gem install -l"
-  cwd Chef::Config[:file_cache_path] + "/gems/*"
+  command "/opt/chef/embedded/bin/gem install -l *"
+  cwd "#{Chef::Config[:file_cache_path]}/gems"
   action :nothing
 end.run_action(:run)
 
