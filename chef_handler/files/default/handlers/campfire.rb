@@ -11,9 +11,9 @@ class Chef
 
       def report
         base_cmd = "curl -k -u #{@token}:X -H 'Content-Type: application/json' -d"
-        message = " \"{'message':{'body':'#{run_status.formatted_exception}'}}\" "
+        body = " \"{'message':{'body':'#{@message} #{run_status.formatted_exception}'}}\" "
         url = "https://#{@subdomain}.campfirenow.com/room/#{@room}/speak.json"
-        cmd = "#{base_cmd} #{@message} #{url}" 
+        cmd = "#{base_cmd} #{body} #{url}" 
         `#{cmd}`
       end
 
