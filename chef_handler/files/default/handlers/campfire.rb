@@ -17,10 +17,11 @@ class Chef
     class Campfire < Chef::Handler
       VERSION = '2.0.2'
 
-      def initialize(subdomain, token, room)
+      def initialize(subdomain, token, room, message)
         @subdomain = subdomain
         @token = token
         @room = room
+        @message = message
       end
 
       def report
@@ -35,7 +36,7 @@ class Chef
                    campfire.find_room_by_id(@room.to_i)
                  end
 
-          room.speak([node.hostname, run_status.formatted_exception].join(' '))
+          room.speak([node.hostname, message, run_status.formatted_exception].join(' - '))
           room.paste(Array(backtrace).join('\n'))
         end
       end
