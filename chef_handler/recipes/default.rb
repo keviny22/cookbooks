@@ -18,9 +18,16 @@
 # limitations under the License.
 #
 
-chef_gem 'tinder' do
+remote_directory "#{Chef::Config[:file_cache_path]}/gems" do
+  source 'gems'
   action :nothing
-end.run_action(:install)
+end.run_action(:create)
+
+execute "Install gems required for tinder" do
+  cmd "/opt/chef/embedded/bin/gem install -l"
+  cwd Chef::Config[:file_cache_path] + "/gems/*"
+  action :nothing
+end.run_action(:execute)
 
 Gem.clear_paths
 require 'tinder'
