@@ -26,7 +26,8 @@ class Chef
       def report
         if run_status.failed?
           Chef::Log.error('Creating Campfire exception report.')
-          campfire = Tinder::Campfire.new(@subdomain, :token => @token)
+          campfire = Tinder::Campfire.new(@subdomain, :token => @token
+                                                    , :ssl_options => { :verify => false })
 
           room = if @room.nil?
                    campfire.rooms.first
