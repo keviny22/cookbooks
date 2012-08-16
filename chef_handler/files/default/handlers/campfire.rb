@@ -36,7 +36,7 @@ class Chef
                    campfire.find_room_by_id(@room.to_i)
                  end
 
-          room.speak([node.hostname, message, run_status.formatted_exception].join(' - '))
+          room.speak([node.hostname, @message, run_status.formatted_exception].join(' - '))
           room.paste(Array(backtrace).join('\n'))
         end
       end
