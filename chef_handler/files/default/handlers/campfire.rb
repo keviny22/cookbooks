@@ -12,10 +12,10 @@ class Chef
       end
 
       def message_body(message)
-        json = { 'message' => 
+        data = { 'message' => 
                  { 'body' => message.to_s }
                }
-        json.to_json
+        data.to_json
       end
 
       def report
