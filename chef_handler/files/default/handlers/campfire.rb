@@ -7,14 +7,22 @@ class Chef
         @token     = token
         @room      = room
         @message   = message
+        @base_cmd  = "curl -s -m 60 -k -u #{@token}:X -H 'Content-Type: application/json'"
+        @url       = "https://#{@subdomain}.campfirenow.com/room/#{@room}/speak.json"
+      end
+
+      def message_body(message)
+        json = { 'message' => 
+                 { 'body' => message.to_s }
+               }
+        json.to_json
       end
 
       def report
-        base_cmd = "curl -s -m 60 -k -u #{@token}:X -H 'Content-Type: application/json'"
-        body     = "-d \"{'message':{'body':'#{@message} #{run_status.formatted_exception}'}}\" "
-        url      = "https://#{@subdomain}.campfirenow.com/room/#{@room}/speak.json"
-        cmd      = "#{base_cmd} #{body} #{url}" 
-        `#{cmd}`
+        message   = "-d '#{message_body @message}'"
+        exception = "-d '#{message_body run_status.formatted_exception}'"
+        `#{@base_cmd} #{message} #{@url}`
+        `#{@base_cmd} #{exception} #{@url}`
       end
 
     end
