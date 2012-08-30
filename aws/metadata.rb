@@ -1,10 +1,7 @@
-maintainer       "Intuit Inc"
-maintainer_email "brett_weaver@intuit.com"
-license          "All rights reserved"
-description      "AWS Cookbook"
-version          "0.1.0"
-depends          "python"
-
-%w{ redhat }.each do |os|
-  supports os
-end
+maintainer        "Opscode, Inc."
+maintainer_email  "cookbooks@opscode.com"
+license           "Apache 2.0"
+description       "LWRPs for managing AWS resources"
+long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+version           "0.100.0"
+recipe            "aws", "Installs the right_aws gem during compile time"
