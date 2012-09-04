@@ -23,4 +23,4 @@ echo "GIT_SHA=$GIT_COMMIT" > ./cookbooks/.build
 # Build and upload artifact
 # Cookbooks builds are set to public
 rvm system
-heirloom upload -n cookbooks -i $GIT_COMMIT -e .git -d . -p
+heirloom upload -n cookbooks -i $GIT_COMMIT -e .git -d . -p -g
