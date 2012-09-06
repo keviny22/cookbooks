@@ -1,1 +1,1 @@
-default['maven']['version'] = '3.0.4'
+default['maven']['version'] = '3.0.4-1'
