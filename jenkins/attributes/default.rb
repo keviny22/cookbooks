@@ -23,6 +23,7 @@
 
 default[:jenkins][:mirror] = "http://mirrors.jenkins-ci.org"
 default[:jenkins][:package_url] = "http://pkg.jenkins-ci.org"
+default[:jenkins][:version] = "1.480-1.1"
 default[:jenkins][:java_home] = ENV['JAVA_HOME']
 
 default[:jenkins][:server][:home] = "/var/lib/jenkins"

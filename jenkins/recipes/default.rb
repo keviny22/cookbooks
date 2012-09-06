@@ -144,6 +144,7 @@ template "/etc/default/jenkins"
 
 package "jenkins" do
   action :nothing
+  version node[:jenkins][:version]
   notifies :create, "template[/etc/default/jenkins]", :immediately
 end
 
