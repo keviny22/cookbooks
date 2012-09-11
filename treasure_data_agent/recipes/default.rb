@@ -6,7 +6,7 @@ end
 directory File.join(node['td_agent']['conf_dir'], 'conf.d') do
   group 'root'
   owner 'root'
-  mode '0700'
+  mode '0755'
 end
 
 template File.join(node['td_agent']['conf_dir'], 'td-agent.conf') do
