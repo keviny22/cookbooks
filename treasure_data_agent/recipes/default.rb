@@ -3,13 +3,13 @@ package 'td-agent' do
   version node['td_agent']['version']
 end
 
-directory File.join(node['td_agent']['conf_root'], 'conf.d') do
+directory File.join(node['td_agent']['conf_dir'], 'conf.d') do
   group 'root'
   owner 'root'
   mode '0700'
 end
 
-template File.join(node['td_agent']['conf_root'], 'td-agent.conf') do
+template File.join(node['td_agent']['conf_dir'], 'td-agent.conf') do
   group 'root'
   owner 'root'
   mode '0644'
