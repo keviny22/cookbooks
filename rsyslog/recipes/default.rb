@@ -6,20 +6,21 @@ end
 directory node['rsyslog']['extra_config_directory'] do
   owner 'root'
   group 'root'
-  mode 0755
+  mode '0755'
 end
 
 directory node['rsyslog']['spool_directory'] do
   owner 'root'
   group 'root'
-  mode 0755
+  mode '0755'
+  recursive true
 end
 
 template '/etc/rsyslog.conf' do
   source 'rsyslog.conf.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode '0644'
   variables :spool_directory => node['rsyslog']['spool_directory']
   notifies :restart, 'service[rsyslog]'
 end
