@@ -17,20 +17,10 @@
 # limitations under the License.
 #
 
-remote_file "#{Chef::Config[:file_cache_path]}/libyaml.rpm" do
-  source node['libyaml']['artifact_url']
-  not_if "which /usr/bin/ruby"
-end
-
-remote_file "#{Chef::Config[:file_cache_path]}/ruby.rpm" do
-  source node['ruby']['artifact_url']
-  not_if "which /usr/bin/ruby"
-end
-
-["libyaml", "ruby"].each do |pkg|
-  rpm_package pkg do
-    source "#{Chef::Config[:file_cache_path]}/#{pkg}.rpm"
-    not_if "which /usr/bin/ruby"
+['libyaml', 'ruby'].each do |pkg|
+  package pkg do
+    action :install
+    version node[pkg]['version']
   end
 end
 
