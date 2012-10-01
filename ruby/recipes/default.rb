@@ -17,11 +17,14 @@
 # limitations under the License.
 #
 
-['libyaml', 'ruby'].each do |pkg|
-  package pkg do
-    action :install
-    version node[pkg]['version']
-  end
+package "intu-ruby" do
+  action :install
+  version node["ruby"]['version']
+end
+
+package "libyaml" do
+  action :install
+  version node["libyaml"]['version']
 end
 
 file "/etc/prelink.conf.d/ruby.conf" do 
