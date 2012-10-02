@@ -24,11 +24,6 @@ package "intu-ruby" do
   version node["ruby"]['version']
 end
 
-package "libyaml" do
-  action :install
-  version node["libyaml"]['version']
-end
-
 file "/etc/prelink.conf.d/ruby.conf" do 
   content "-b /usr/bin/ruby\n"
   owner "root"
