@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe 'intu_package_repos::custom_packages'
+
 package "intu-ruby" do
   action :install
   version node["ruby"]['version']
