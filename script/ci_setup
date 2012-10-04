@@ -8,12 +8,7 @@ fi
 # Exit with error if any command returns non zero
 set -e
 
-# Set build dir to root below script dir
-script_dir="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-dir=`echo $script_dir | sed -e 's/\/script//'`
-
 # Chef expects the cookbooks in cookbooks directory
-cd $dir
 mkdir cookbooks
 for f in $(ls -a |egrep -v '^cookbooks$' |egrep -v '^\.$|^\.\.$|^\.git$'); do
   /bin/mv $f cookbooks
