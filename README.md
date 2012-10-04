@@ -24,3 +24,4 @@ To get started without Cloud Formation, checkout the README in the [Intuit Chef 
 Contributing
 ------------
 If you would like to contribute to this repo, please fork this repo and send us a pull request.
+
