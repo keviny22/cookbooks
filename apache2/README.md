@@ -54,6 +54,11 @@ On Red Hat Enterprise Linux and derivatives, the EPEL repository may be necessar
 
 The `apache2::mod_php5` recipe depends on the `freebsd` cookbook, which it uses to set the correct options for compiling the `php5` port from sources. You need to ensure the `freebsd` is in the expanded run list, or this recipe will fail. We don't set an explicit dependency because we feel the `freebsd` cookbook is something users would want on their nodes, and due to the generality of this cookbook we don't want additional specific dependencies.
 
+Tests
+=====
+
+This cookbook in the [source repository](https://github.com/opscode-cookbooks/apache2) contains minitest and cucumber tests. This is an initial proof of concept that will be fleshed out with more supporting infrastructure at a future time.
+
 Attributes
 ==========
 
@@ -73,6 +78,8 @@ In order to support the broadest number of platforms, several attributes are det
 * `node['apache']['cache_dir']` - Location for cached files used by Apache itself or recipes
 * `node['apache']['pid_file']` - Location of the PID file for Apache httpd
 * `node['apache']['lib_dir']` - Location for shared libraries
+* `node['apache']['default_site_enabled']` - Default site enabled. Defaults to true on redhat-family platforms
+* `node['apache']['ext_status']` - if true, enables ExtendedStatus for `mod_status`
 
 General settings
 ----------------
@@ -128,7 +135,7 @@ Recipes
 
 Most of the recipes in the cookbook are for enabling Apache modules. Where additional configuration or behavior is used, it is documented below in more detail.
 
-The following recipes merely enable the specified module: `mod_alias`, `mod_basic`, `mod_digest`, `mod_authn_file`, `mod_authnz_ldap`, `mod_authz_default`, `mod_authz_groupfile`, `mod_authz_host`, `mod_authz_user`, `mod_autoindex`, `mod_cgi`, `mod_dav_fs`, `mod_dav_svn`, `mod_deflate`, `mod_dir`, `mod_env`, `mod_expires`, `mod_headers`, `mod_ldap`, `mod_log_config`, `mod_mime`, `mod_negotiation`, `mod_proxy`, `mod_proxy_ajp`, `mod_proxy_balancer`, `mod_proxy_connect`, `mod_proxy_http`, `mod_python`, `mod_rewrite`, `mod_setenvif`, `mod_status`, `mod_wsgi`, `mod_xsendfile`.
+The following recipes merely enable the specified module: `mod_alias`, `mod_basic`, `mod_digest`, `mod_auth_cas`, `mod_authn_file`, `mod_authnz_ldap`, `mod_authz_default`, `mod_authz_groupfile`, `mod_authz_host`, `mod_authz_user`, `mod_autoindex`, `mod_cgi`, `mod_dav_fs`, `mod_dav_svn`, `mod_deflate`, `mod_dir`, `mod_env`, `mod_expires`, `mod_headers`, `mod_ldap`, `mod_log_config`, `mod_mime`, `mod_negotiation`, `mod_proxy`, `mod_proxy_ajp`, `mod_proxy_balancer`, `mod_proxy_connect`, `mod_proxy_http`, `mod_python`, `mod_rewrite`, `mod_setenvif`, `mod_status`, `mod_wsgi`, `mod_xsendfile`.
 
 On RHEL Family distributions, certain modules ship with a config file with the package. The recipes here may delete those configuration files to ensure they don't conflict with the settings from the cookbook, which will use per-module configuration in `/etc/httpd/mods-enabled`.
 
@@ -136,6 +143,11 @@ default
 -------
 
 The default recipe does a number of things to set up Apache HTTPd. It also includes a number of modules based on the attribute `node['apache']['default_modules']` as recipes.
+
+logrotate
+---------
+
+Logrotate adds a logrotate entry for your apache2 logs. This recipe requires the `logrotate` cookbook.
 
 mod\_auth\_openid
 -----------------
@@ -157,6 +169,13 @@ Change the DBLocation with the attribute as required; this file is in a differen
 * `AuthType OpenID` instead of `AuthOpenIDEnabled On`.
 * `require user` instead of `AuthOpenIDUserProgram`.
 * A bug(?) in `mod_auth_openid` causes it to segfault when attempting to update the database file if the containing directory is not writable by the HTTPD process owner (e.g., www-data), even if the file is writable. In order to not interfere with other settings from the default recipe in this cookbook, the db file is moved.
+
+mod\_fastcgi
+------------
+
+Install the fastcgi package and enable the module.
+
+Only work on Debian/Ubuntu
 
 mod\_fcgid
 ----------
@@ -272,7 +291,7 @@ Current parameters used by the definition:
 
 * `name` - The name of the site. The template will be written to `#{node['apache']['dir']}/sites-available/#{params['name']}.conf`
 * `cookbook` - Optional. Cookbook where the source template is. If this is not defined, Chef will use the named template in the cookbook where the definition is used.
-* `template` - Default `web_app.conf.erb`, source template file. 
+* `template` - Default `web_app.conf.erb`, source template file.
 * `enable` - Default true. Passed to the `apache_site` definition.
 
 Additional parameters can be defined when the definition is called in a recipe, see __Examples__.
@@ -296,9 +315,9 @@ To use the default web_app, for example:
 
 The parameters specified will be used as:
 
-* `@params['server_name']`
-* `@params['server_aliases']`
-* `@params['docroot']`
+* `@params[:server_name]`
+* `@params[:server_aliases]`
+* `@params[:docroot]`
 
 In the template. When you write your own, the `@` is significant.
 
