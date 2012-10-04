@@ -7,6 +7,7 @@ define :new_relic_java_agent_config do
   cookbook_file jar_path
     backup false
     source 'newrelic.jar'
+    cookbook 'new_relic'
   end
 
   template node['new_relic']['config']['file_path'] do
