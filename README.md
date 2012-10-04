@@ -13,7 +13,7 @@ Getting Started
 
 **Cloud Formation**
 
-The easiest way to get started is to launch the [Single Instance Baseline Template](https://github.com/live-community/cloud_formation_templates/blob/master/classic/single_instances/chef/base_instance_with_chef.json) from the [Cloud Formation Templates Repo](https://github.com/live-community/cloud_formation_templates). 
+The easiest way to get started is to launch the [Single Instance Baseline Template](https://github.com/live-community/cloud_formation_templates/blob/master/classic/single_instances/chef/base_instance_with_chef.json) from the [Cloud Formation Templates Repo](https://github.com/live-community/cloud_formation_templates).
 
 For more information on getting started with Cloud Formation, see [AWS Agility Framework Wiki](https://github.com/live-community/aws-agility-framework/wiki/Getting-Started)
 
