@@ -4,7 +4,7 @@ define :new_relic_java_agent_config do
   jar_path = File.join(File.dirname(node['new_relic']['config']['file_path']),
                        'newrelic.jar')
 
-  cookbook_file jar_path
+  cookbook_file jar_path do
     backup false
     source 'newrelic.jar'
     cookbook 'new_relic'
