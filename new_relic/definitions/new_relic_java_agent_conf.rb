@@ -1,7 +1,10 @@
 define :new_relic_java_agent_config do
   node['new_relic']['config']['file_path'] = params[:name]
 
-  cookbook_file File.dirname(node['new_relic']['config']['file_path']) do
+  jar_path = File.join(File.dirname(node['new_relic']['config']['file_path']),
+                       'newrelic.jar')
+
+  cookbook_file jar_path
     backup false
     source 'newrelic.jar'
   end
