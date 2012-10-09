@@ -1,9 +1,9 @@
 define :cron_authorization do
-  if params[:user]
-    command "echo #{params[:user]} >> /etc/cron.allow"
-    not_if do
-      IO.read('/etc/cron.allow').include? "\n#{params[:user]}\n"
-    end
+  raise ArgumentError.new 'name must be specified' if params[:name].nil? || params[:name].empty?
+
+  command "echo #{params[:name]} >> /etc/cron.allow"
+  not_if do
+    IO.read('/etc/cron.allow').include? "\n#{params[:name]}\n"
   end
 end
 
