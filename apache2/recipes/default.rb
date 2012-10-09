@@ -19,6 +19,7 @@
 
 package "apache2" do
   package_name node['apache']['package']
+  version node['apache']['version']
   action :install
 end
 
