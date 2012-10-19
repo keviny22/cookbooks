@@ -23,9 +23,11 @@ module Papertrail
 
     private
     def build_create_params(params)
-      data = { 'name' => name }
-      data.merge! params if params
-      data
+      params.merge!({ 'name' => name })
+
+      param_data = params.map { |k,v| ["group[#{k}]", v] }
+
+      Hash[*param_data.flatten]
     end
 
   end
