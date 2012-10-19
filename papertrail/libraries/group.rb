@@ -1,15 +1,9 @@
 require 'uri'
 
 module Papertrail
-  class Group
+  module Group
 
-    attr_reader :name
-
-    def initialize(name)
-      @name = name
-    end
-
-    def exists?
+    def exists?(name)
       http                          = Net::HTTP.new api_host
       request                       = Net::HTTP::Get.new groups_url
       request['X-Papertrail-Token'] = node['papertrail']['api_token']
