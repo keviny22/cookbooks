@@ -1,38 +1,31 @@
 require 'uri'
 
 module Papertrail
-  module Group
+  class Group
 
-    def exists?(name)
-      http                          = Net::HTTP.new api_host
-      request                       = Net::HTTP::Get.new groups_url
-      request['X-Papertrail-Token'] = node['papertrail']['api_token']
+    attr_reader :name
 
-      response                      = JSON.parse(http.request(request).body)
-      group                         = response.select { |g| g['name'] == name }
+    def initialize(name, client)
+      @client = client
+      @name   = name
+    end
+
+    def exists?
+      data  = @client.get_request('/groups.json')
+      group = data.select { |g| g['name'] == name }
       group.any?
     end
 
-    def create(name, system_wildcard)
-      http                          = Net::HTTP.new api_host
-      request                       = Net::HTTP::Post.new groups_url
-      request['X-Papertrail-Token'] = node['papertrail']['api_token']
-      request.set_form_data 'name'            => name,
-                            'system_wildcard' => system_wildcard
-      http.request request
+    def create(params=nil)
+      @client.post_request '/groups.json', create_params(params)
+      self
     end
 
     private
-    def api_endpoint
-      node['papertrail']['api_endpoint']
-    end
-
-    def api_host
-      URI(node['papertrail']['api_endpoint']).host
-    end
-
-    def groups_url
-      URI.join api_endpoint, 'groups.json'
+    def build_create_params(params)
+      data = { 'name' => name }
+      data.merge! params if params
+      data
     end
 
   end
