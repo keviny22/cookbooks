@@ -37,8 +37,8 @@ module Papertrail
 
       @http_client = Net::HTTP.new api_host, 443
       @http_client.tap do |client|
-        http.use_ssl     = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        client.use_ssl     = true
+        client.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
     end
 
