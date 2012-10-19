@@ -8,7 +8,7 @@ action :create do
   unless exists?
     Chef::Log.debug "Papertrail group #{new_resource.name} does not exist"
 
-    @current_resource.create new_resource.name, create_parameters
+    @current_resource.create create_parameters
 
     Chef::Log.debug "Papertrail group #{new_resource.name} created"
     new_resource.updated_by_last_action true
