@@ -19,7 +19,7 @@ private
 def create_parameters
   {}.tap do |data|
     if new_resource.system_wildcard
-      data.merge! { 'system_wildcard' => new_resource.system_wildcard }
+      data.merge!({ 'system_wildcard' => new_resource.system_wildcard })
     end
   end
 end

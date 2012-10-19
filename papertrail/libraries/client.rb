@@ -9,15 +9,15 @@ module Papertrail
     end
 
     def get_request(url)
-      full_url = URI.join api_endpoint, url
-      request                       = Net::HTTP::Get.new full_url
+      http                          = Net::HTTP.new api_host, 443
+      request                       = Net::HTTP::Get.new api_url_path(url)
       request['X-Papertrail-Token'] = api_token
       JSON.parse(http.request(request).body)
     end
 
     def post_request(url, data)
-      http                          = Net::HTTP.new api_host
-      request                       = Net::HTTP::Post.new url
+      http                          = Net::HTTP.new api_host, 443
+      request                       = Net::HTTP::Post.new api_url_path(url)
       request['X-Papertrail-Token'] = api_token
       request.set_form_data data
       JSON.parse(http.request(request).body)
@@ -28,6 +28,10 @@ module Papertrail
 
     def api_host
       URI(api_endpoint).host
+    end
+
+    def api_url_path(url)
+      "#{URI(api_endpoint).path}#{url}"
     end
 
     def http_client
