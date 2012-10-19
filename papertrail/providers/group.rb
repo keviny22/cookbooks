@@ -1,7 +1,5 @@
-include Papertrail::Group
-
 def load_current_resource
-  @current_resource = Group.new new_resource.name
+  @current_resource = Papertrail::Group.new new_resource.name
 end
 
 action :create do
