@@ -9,22 +9,16 @@ module Papertrail
     end
 
     def get_request(url)
-      http                          = Net::HTTP.new api_host, 443
-      http.use_ssl                  = true
-      http.verify_mode              = OpenSSL::SSL::VERIFY_NONE
       request                       = Net::HTTP::Get.new api_url_path(url)
       request['X-Papertrail-Token'] = api_token
-      JSON.parse(http.request(request).body)
+      JSON.parse(http_client.request(request).body)
     end
 
     def post_request(url, data)
-      http                          = Net::HTTP.new api_host, 443
-      http.use_ssl                  = true
-      http.verify_mode              = OpenSSL::SSL::VERIFY_NONE
       request                       = Net::HTTP::Post.new api_url_path(url)
       request['X-Papertrail-Token'] = api_token
       request.set_form_data data
-      JSON.parse(http.request(request).body)
+      JSON.parse(http_client.request(request).body)
     end
 
     private
@@ -39,7 +33,13 @@ module Papertrail
     end
 
     def http_client
-      @http_client ||= Net::HTTP.new api_host
+      return @http_client if @http_client
+
+      @http_client = Net::HTTP.new api_host, 443
+      @http_client.tap do |client|
+        http.use_ssl     = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
     end
 
   end
