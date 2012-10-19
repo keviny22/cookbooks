@@ -17,7 +17,7 @@ module Papertrail
     end
 
     def create(params=nil)
-      @client.post_request '/groups.json', create_params(params)
+      @client.post_request '/groups.json', build_create_params(params)
       self
     end
 
