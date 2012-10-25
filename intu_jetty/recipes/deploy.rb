@@ -1,7 +1,8 @@
 user "jetty" do
-  comment "I run jetty"
-  system true
-  shell "/bin/false"
+  comment "I run Jetty"
+  home "/home/jetty"
+  shell "/bin/bash"
+  not_if { File.exists? "/home/jetty" }
 end
 
 yum_package "jetty-hightide-server" do
