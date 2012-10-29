@@ -1,16 +1,20 @@
-user "jetty" do
+jetty_user_home = node['intu']['jetty']['user']['home']
+user = node['intu']['jetty']['user']
+group = node['intu']['jetty']['group']
+
+user "#{user}" do
   comment "I run Jetty"
-  home "/home/jetty"
+  home jetty_user_home
   shell "/bin/bash"
-  not_if { File.exists? "/home/jetty" }
+  not_if { File.exists? "#{jetty_user_home}" }
 end
 
-directory "/home/jetty/logs" do
-  owner "jetty"
-  group "jetty"
+directory "#{jetty_user_home}/logs" do
+  owner user
+  group group
   mode "0755"
   action :create
-  not_if { File.exists? "/home/jetty/logs" }
+  not_if { File.exists? "#{jetty_user_home}/logs" }
 end
 
 yum_package "jetty-hightide-server" do
@@ -21,6 +25,6 @@ end
 template "/etc/default/jetty" do
   source "jetty-config-options.erb"
   mode "0644"
-  owner node['intu']['jetty']['user']
-  group node['intu']['jetty']['group']
+  owner user
+  group group
 end
