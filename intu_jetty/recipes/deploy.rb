@@ -1,4 +1,4 @@
-jetty_user_home = node['intu']['jetty']['user']['home']
+jetty_user_home = node['intu']['jetty']['user_home']
 user = node['intu']['jetty']['user']
 group = node['intu']['jetty']['group']
 
