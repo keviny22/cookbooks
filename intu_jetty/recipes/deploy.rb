@@ -27,4 +27,5 @@ template "/etc/default/jetty" do
   mode "0644"
   owner user
   group group
+  not_if { File.exists? "/etc/default/jetty" }
 end
