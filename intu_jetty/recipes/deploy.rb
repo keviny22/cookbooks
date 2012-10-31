@@ -29,3 +29,8 @@ template "/etc/default/jetty" do
   group group
   not_if { File.exists? "/etc/default/jetty" }
 end
+
+service "jetty" do
+  supports :restart => true
+  action [:enable, :start]
+end
