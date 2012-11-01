@@ -33,8 +33,8 @@ end
 template "/etc/init.d/jetty" do
   source "jetty-init-script.erb"
   mode "0755"
-  owner root
-  group root
+  owner "root"
+  group "root"
   action :create
 end
 
