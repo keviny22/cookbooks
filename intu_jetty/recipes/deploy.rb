@@ -30,6 +30,14 @@ template "/etc/default/jetty" do
   not_if { File.exists? "/etc/default/jetty" }
 end
 
+template "/etc/init.d/jetty" do
+  source "jetty-init-script.erb"
+  mode "0755"
+  owner root
+  group root
+  action :create
+end
+
 service "jetty" do
   supports :restart => true
   action [:enable, :start]
