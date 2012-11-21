@@ -14,7 +14,8 @@ directory "#{jetty_user_home}/logs" do
   mode "0755"
 end
 
-yum_package "jetty-hightide-server" do
+package "jetty-hightide-server" do
+  version "#{node['intu']['jetty']['version']}-1"
 end
 
 template "/etc/default/jetty" do
