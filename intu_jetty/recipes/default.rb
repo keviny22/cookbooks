@@ -28,8 +28,7 @@ template "/etc/default/jetty" do
             :jetty_port => node['intu']['jetty']['port'],
 end
 
-template "/etc/init.d/jetty" do
-  source "jetty-init-script.erb"
+cookbook_file "/etc/init.d/jetty" do
   mode "0755"
   owner "root"
   group "root"
