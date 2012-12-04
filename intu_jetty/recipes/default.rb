@@ -25,7 +25,7 @@ template "/etc/default/jetty" do
   group group
   variables :jetty_home => node['intu']['jetty']['home'],
             :jetty_user => user,
-            :jetty_port => node['intu']['jetty']['port'],
+            :jetty_port => node['intu']['jetty']['port']
 end
 
 cookbook_file "/etc/init.d/jetty" do
