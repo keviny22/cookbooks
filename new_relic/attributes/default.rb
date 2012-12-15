@@ -12,4 +12,5 @@ default['new_relic']['server_monitor']['log_file']     = '/var/log/newrelic/nrsy
 default['new_relic']['server_monitor']['package_name'] = 'newrelic-sysmond'
 default['new_relic']['server_monitor']['pid_file']     = '/var/run/newrelic/nrsysmond.pid'
 default['new_relic']['server_monitor']['service_name'] = 'newrelic-sysmond'
+default['new_relic']['server_monitor']['ssl']          = true
 default['new_relic']['server_monitor']['version']      = '1.1.2.124-1'

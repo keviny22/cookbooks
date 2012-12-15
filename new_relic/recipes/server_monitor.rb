@@ -19,7 +19,8 @@ template node['new_relic']['server_monitor']['config_file'] do
   mode '0640'
   source 'nrsysmond.cfg.erb'
   variables :license_key => node['new_relic']['config']['license_key'],
-            :log_file    => node['new_relic']['server_monitor']['log_file']
+            :log_file    => node['new_relic']['server_monitor']['log_file'],
+            :ssl         => node['new_relic']['server_monitor']['ssl']
   notifies :restart,
             resources(:service => node['new_relic']['server_monitor']['service_name'])
 end
