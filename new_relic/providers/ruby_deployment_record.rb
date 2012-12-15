@@ -10,7 +10,7 @@ end
 
 private
 def command_to_run
-  command = "bundle exec deployment"
+  command = "bundle exec newrelic deployment"
   command << " --user #{new_resource.user}"
   command << [app_name, environment, revision].join
 end
