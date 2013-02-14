@@ -4,3 +4,4 @@ default['intu']['jetty']['user']  = 'jetty'
 default['intu']['jetty']['user_home']  = '/home/jetty'
 default['intu']['jetty']['group'] = 'jetty'
 default['intu']['jetty']['port']  = 8080
+default['intu']['jetty']['log_dir'] = "#{default['intu']['jetty']['home']}/logs"
